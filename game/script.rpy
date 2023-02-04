@@ -1,12 +1,16 @@
 define config.rollback_enabled = False
 
 define p = Character("...")
+define a = Character ("Axel")
+
+#VARIABLES#
 
 default ticktock = 0
 default funky = 0
 
 default havepostcard = False
 default havemarker = False
+default havename = False
 
 default bikeS2 = False
 default calendarS1 = False
@@ -18,8 +22,16 @@ default notebookS2 = False
 default photographS1 = False
 default photographS2 = False
 
+#IMAGES#
+
 image bg white = "#fff"
 image bg black = "#000"
+image bg room = im.FactorScale("mainroom.jpg", 1.2)
+
+#SFX#
+
+define cityscape = "audio/sfx/name.mp3"
+define keyjangle = "audio/sfx/name.mp3"
 
 label start:
     scene bg black
@@ -53,18 +65,20 @@ label start:
     "The fan groans as I switch it on."
     "That's right. {w}I need to find them."
     "I need to hurry and find {glitch=59.94}them{/glitch}."
+    $ renpy.pause(0.5, hard=False)
     jump mainroom
 
 label mainroom:
     scene bg black
     if funky == 1:
-        $ renpy.pause(0.5, hard=False)
+        $ renpy.pause(1, hard=False)
         "My head hurts."
         "I need to hurry."
         "I need to find them."
+        $ renpy.pause(1, hard=False)
         window hide
     if funky == 2:
-        $ renpy.pause(0.5, hard=False)
+        $ renpy.pause(1, hard=False)
         "The sun's going to set soon."
         "On my way back, I tried to call them."
         "No. I wanted to call them."
@@ -72,13 +86,15 @@ label mainroom:
         "I checked my phone, I scrolled down all my contacts. But none of them seemed right. {w}I don't think I saved them to my contacts list."
         "I checked all the calls I'd made this month, but there were too many. I had a feeling—"
         "I wouldn't recognise their number anyway."
+        $ renpy.pause(1, hard=False)
         window hide
     if funky == 3:
-        $ renpy.pause(0.5, hard=False)
+        $ renpy.pause(1, hard=False)
         "It's meant to be painless, {w}but my head hurts anyway."
+        $ renpy.pause(1, hard=False)
         window hide
     if ticktock == 4:
-        $ renpy.pause(0.5, hard=False)
+        $ renpy.pause(1, hard=False)
         "The sun is setting. {w}It's beautiful, though it doesn't reach the inside of my room well."
         "At one of my old jobs, I used to be able to look out of the service window and skim over the buildings to reach the mountains."
         "The sun would set orange at around seven in summer, and a pinkish glow would gather at my feet. {w}Always felt sort of melancholy, that."
@@ -87,22 +103,17 @@ label mainroom:
         "I look away from the sliver of twilight through the blinds."
         p "Right. I still have to find them."
         "Even if I have this feeling...{w}it's getting too late."
+        $ renpy.pause(1, hard=False)
         window hide
-        #end demo here
-        show text "To Be Continued (Well. To Be Finished By The 4th)" at truecenter
-        with dissolve
-        pause
-        hide text
-        with dissolve
-        return
-        #end of end-demo-screen teehee
     if funky == 5:
-        $ renpy.pause(0.5, hard=False)
+        $ renpy.pause(1, hard=False)
         "funky: 5."
+        $ renpy.pause(1, hard=False)
         window hide
     if ticktock == 7:
-        $ renpy.pause(0.5, hard=False)
+        $ renpy.pause(1, hard=False)
         "..."
+        $ renpy.pause(1, hard=False)
         window hide
     scene bg room
     menu():
@@ -142,11 +153,6 @@ label bike:
         jump mainroom
     #bike stage 2
     if ticktock in range(4, 7):
-        $ funky += 1
-        "."
-        jump mainroom
-    #bike stage 3
-    if ticktock in range(7, 10):
         $ funky += 1
         "."
         jump mainroom
@@ -276,7 +282,7 @@ label camerascene:
                     p "Wait."
                     p "That's..."
                     "On the row where the photographer's signature goes, there's a name. {w}Only it's not my name."
-                    "{i}Axel T.S Fung{/i}"
+                    "{i}Axel T.S Fung{/i}."
                     p "..."
                     "The recognition, or—{w}rather—{w}the non-recognition, is tasteless."
                     "Is that the name of the friend who gave me this camera?"
@@ -286,6 +292,7 @@ label camerascene:
                         "{i}'A—'{/i}."
                     "Is that the person I'm trying to find?"
                     "But there's no contact information on the rest of the page."
+                    $ havename = True
             jump mainroom
         else:
             "I've just looked at that."
@@ -302,10 +309,6 @@ label camerascene:
         else:
             "."
             jump mainroom
-    #camera stage 3
-    if ticktock in range(7, 10):
-        "."
-        jump mainroom
     if ticktock == 8:
         jump end1
 
@@ -383,10 +386,6 @@ label notebook:
         else:
             "."
             jump mainroom
-    #notebook stage 3
-    if ticktock in range(7, 10):
-        "."
-        jump mainroom
     if ticktock == 8:
         jump end1
 

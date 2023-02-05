@@ -76,9 +76,10 @@ label end1:
 label end2:
     scene bg room
     "..."
-    "I feel tired."
+    "I'm starting to remember more now."
+    "...Who knew memory could be so tiring."
     "I sit down and turn to a different page in the open notebook. I take out a pen."
-    "I remember..."
+    "I think back to..."
     scene bg memory
     "That new year, we had been by the pier."
     "I'd bought a cold lunchbox from the Japanese supermarket. {w}He had a couple of oranges."

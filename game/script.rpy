@@ -35,6 +35,7 @@ default photographS1 = False
 default photographS2 = False
 default remembranceS1 = False
 default remembranceS2 = False
+default remembranceS3 = False
 
 #PERSISTENT VARIABLES#
 
@@ -58,6 +59,12 @@ image ending1 = "ending1.png"
 image ending2 = "ending2.png"
 image ending3 = "ending3.png"
 
+#MUSIC#
+
+define menumusic = "audio/BGM/menu.mp3"
+define roommusic = "audio/BGM/room.mp3"
+define tensionmusic = "audio/BGM/tension.mp3"
+
 #SFX#
 
 define cityscape = "audio/sfx/name.mp3"
@@ -66,6 +73,7 @@ define click = "audio/sfx/name.mp3"
 define keyjangle = "audio/sfx/name.mp3"
 
 label start:
+    play music tensionmusic fadein 3.0
     scene bg black
     $ renpy.pause(0.8, hard=False)
     show text "I arrive home in a hurry." at truecenter
@@ -96,7 +104,7 @@ label start:
     "What am I doing."
     "The fan groans as I switch it on."
     "That's right. {w}I need to find them."
-    "I need to hurry and find {glitch=59.94}them{/glitch}."
+    "I need to hurry and remember {glitch=59.94}them{/glitch}."
     $ renpy.pause(0.5, hard=False)
     if persistent.axelend:
             scene bg memory
@@ -117,7 +125,7 @@ label mainroom:
         $ renpy.pause(1, hard=False)
         "My head hurts."
         "I need to hurry."
-        "I need to find them."
+        "I need to remember them."
         $ renpy.pause(1, hard=False)
         window hide
     if funky == 2:
@@ -152,37 +160,51 @@ label mainroom:
         "Even if I have a feeling...{w}it's getting too late."
         $ renpy.pause(1, hard=False)
         window hide
+        play music roommusic fadein 3.0
     if funky == 5:
         $ renpy.pause(1, hard=False)
         "..."
         "What am I missing."
-        "How do I find you."
+        "How do I keep it from slipping away."
         $ renpy.pause(1, hard=False)
         window hide
+    if ticktock == 7 and remembranceS3 == True:
+        jump end2
     if ticktock == 7:
+        $ ticktock += 1
         "..."
-        "The sun is setting."
-    if ticktock == 8:
+        "Oh."
+        "The shuttered window lets in a sliver of evening."
+        "The sun is almost gone."
+        if havepostcard == True:
+            "I put my hand into my pocket again, feeling the sharp edge of the postcard."
+            "When I take it out, the swoop of the 'A' is still there."
+            "I guess it was too generic to be erased."
+            "...Or maybe it just doesn't mean enough."
+            "I run my thumb over the edge of the postcard, but the side of the cardstock is too blunt to cut through skin."
+            "...Maybe this postcard just doesn't mean enough."
+    if ticktock == 9:
         jump end1
     scene bg room
     $ renpy.pause(0.5, hard=False)
-    menu():
-        "Bike":
-            jump bike
+    call screen apartment
+    # menu():
+    #     "Bike":
+    #         jump bike
         #"Book":
         #    jump book
-        "Calendar":
-            jump calendar
-        "Camera":
-            jump camerascene
-        "Clock":
-            jump clock
-        "Notebook":
-            jump notebook
-        "Pamphlet":
-            jump pamphlet
-        "Photographs":
-            jump photograph
+        # "Calendar":
+        #     jump calendar
+        # "Camera":
+        #     jump camerascene
+        # "Clock":
+        #     jump clock
+        # "Notebook":
+        #     jump notebook
+        # "Pamphlet":
+        #     jump pamphlet
+        # "Photographs":
+        #     jump photograph
         #"Receipt":
         #    jump receipt
         #"Snacks":
@@ -199,7 +221,7 @@ label bike:
         "It's not important right now."
         jump mainroom
     #bike stage 2
-    if ticktock in range(4, 7):
+    if ticktock in range(4, 9):
         if bikeS2 == False:
             $ funky += 1
             $ ticktock += 1
@@ -295,7 +317,7 @@ label calendar:
             "But as I reach out to touch this proof of life, it {glitch=59.94}goes like—{/glitch}"
             "And then—"
             "{glitch=59.94}And then—{/glitch}"
-            if pamphletink == True:
+            if pamphletink == True and remembranceS1 == False:
                 jump remembrance1
             "My thumb is pressed to the calendar. {w}Right below the square that's January 21st."
             "I've marked it in black."
@@ -321,7 +343,7 @@ label calendar:
             "And I have a gut feeling it's connected to {i}them{/i}."
             "I'll have to keep an eye out for anything marked with this date."
             jump mainroom
-    if ticktock in range(4, 7):
+    if ticktock in range(4, 9):
         if calendarS2 == False:
             $ funky += 1
             $ ticktock += 1
@@ -461,8 +483,8 @@ label camerascene:
             "I've just checked the camera, no point doing it again."
             jump mainroom
     #camera stage 2
-    if ticktock in range(4, 7):
-        if funky in range(4, 7):
+    if ticktock in range(4, 9):
+        if funky in range(4, 9):
             $ funky += 1
         if cameraS2 == False:
             $ ticktock += 1
@@ -524,7 +546,7 @@ label clock:
             "I glance at the clock. {w}It's still dead."
             jump mainroom
     #clock stage 2
-    if ticktock in range(4, 7):
+    if ticktock in range(4, 9):
         if remembranceS2 == True:
             jump end3
         if clockS2 == False:
@@ -617,8 +639,8 @@ label notebook:
             "I glance at the notebook, still splayed on the table. No. I can't be distracted right now."
             jump mainroom
     #notebook stage 2
-    if ticktock in range(4, 7):
-        if funky in range(4, 7):
+    if ticktock in range(4, 9):
+        if funky in range(4, 9):
             $ funky += 1
         if notebookS2 == False:
             $ ticktock += 1
@@ -627,9 +649,30 @@ label notebook:
             if notebookS1 == True:
                 "I tossed it away earlier, but..."
                 "There's a lot of information here. There's probably something I missed."
+                "This time, I should be more careful."
+            "I turn the pages, skimming the text and looking for a name or a number, looking for something out of place."
+            "But even though it's all text, all of it written by a past making an attempt to communicate with its future, there's nothing that pricks my awareness."
+            "I try to slow down, conscious that all the words will blur together if I'm not careful."
+            "The only problem is...even though I'm searching for something, I don't know what exactly I'm searching for."
+            "A name, I suppose. A face."
+            "A way to remember someone who might already be dead."
+            if remembranceS1 == True:
+                "I spot something strange, and flip back to look at a certain page. {w}It's completely empty, though it's sandwiched between two filled pages. {w}Just white paper and little inked dots."
+                "...I wonder what I wrote here."
+                if havename == True:
+                    "Come to think of it, I think Axel had talked about that."
+                else:
+                    "Come to think of it, I think...I think the person I'm looking for had talked about that."
+                "They said...it was strange, how easy it was to erase writing, but not other things."
+                "The words in the history books went away by themselves, but they had to get workers to scrub off the gallons of paint graffiti-ing the government adminstrative building."
+                "I had also wondered why that was."
+                "I thought that it might have been because of how easy words in a book are. {w}How universal the communication of a common language is."
+                "{i}Then what was it,{/i} that guy said, {i}what was the tangible difference between a word sprayed on a subway ceiling and a word in schoolbook printed a hundred-thousand times over.{/i}"
+                $ remembranceS3 = True
             "..."
-            if havename == True and havepostcard == True:
-                "Axel..."
+            "Eventually, I put the notebook down and rub my forehead."
+            "I wonder if there was a better way I could have gone about this. {w}A methodology I could have employed."
+            "...Maybe not."
             jump mainroom
         else:
             "The notebook is still here...but I don't think it's right. {w}I should look at something else."
@@ -668,7 +711,7 @@ label pamphlet:
             "They?"
             "I frown."
             "Right, {glitch=59.94}they—{/glitch}"
-            if calendarink == True:
+            if calendarink == True and remembranceS1 == False:
                 jump remembrance1
             "{glitch=59.94}They—{/glitch}"
             $ renpy.pause(0.8, hard=False)
@@ -688,10 +731,29 @@ label pamphlet:
             "No, I've just looked at the pamphlet."
             jump mainroom
     #pamphlet stage 2
-    if ticktock in range(4, 7):
-        $ funky += 1
-        "."
-        jump mainroom
+    if ticktock in range(4, 9):
+        if pamphletS2 == False:
+            $ pamphletS2 = True
+            $ ticktock += 1
+            $ funky += 1
+            "The pamphlet."
+            if pamphletS1 == True:
+                "I've looked at this already. I don't think there's anything else. Unless..."
+            "It's pretty musty and yellowed at this point, and I don't even recognise the woman on the front."
+            "At some point, this pamphlet became too old to throw away. {w}But I wonder why I kept it in the first place."
+            "It's honestly possible, if not probable, that this ended up in my house completely by accident and I didn't discover its existence until some sort of spring cleaning or upending of old documents took place."
+            "...But even if it was never important, I can't know for sure. It's too old to throw away now."
+            "I don't understand my own obsession with that, at times."
+            "This flimsy propaganda template doesn't mean anything to me, and that's why I'm afraid."
+            "What if it's something important that had all the meaning scraped out of it?"
+            "...I don't want to throw away something that had been meaningful to me. {w}Something I might not have let go of by choice."
+            "It's true that ever since the censors started cutting out words, I've thrown away a lot of things. {w}I've had to, living in a single room like this."
+            "But I always try to keep paper, since it's light. Since it's foldable."
+            "The boxes under my table are all miscellanea of this sort."
+            jump mainroom
+        else:
+            "The pamphlet. But I've just looked at it...I don't think there's anything else."
+            jump mainroom
 
 label photograph:
     #photograph stage 1
@@ -719,7 +781,7 @@ label photograph:
             "There's one print I pause at, some wasted guy vomiting down a sewer drain. {w}The camera's shaky, the man's face is blurred."
             "But I remember the context for this picture, and a second later I recognise the drunk guy after all—{w}one of my old coworkers from that shaved ice place, Rocky."
             "I can't remember which asshole who took the picture and handed out prints though. {w}Guess I'm an asshole too for sticking it up."
-            "I stop on a postcard that looks a little out of place."
+            "I stop on a postcard that looks somewhat out of place."
             "A postcard with a drawing of a Japanese shrine-looking place. Temple, maybe. {w}Looks like it's from a show or something."
             "But it's new. {w}No dust and just one tack, gone right through the middle. {w}I usually pin with two tacks, top left and top right."
             "I unpick the postcard from the board and turn it over in my hand."
@@ -739,19 +801,34 @@ label photograph:
             jump mainroom
         else:
             "I glance at the corkboard again."
-            "Nothing new there. {w}A sense of urgency drives me away."
+            "Nothing new there. {w}That sense of quiet urgency drives me away."
             jump mainroom
     #photograph stage 2
-    if ticktock in range(4, 7):
-        if funky in range(4, 7):
-            $ funky += 1
+    if ticktock in range(4, 9):
         if photographS2 == False:
+            $ funky += 1
             $ ticktock += 1
             $ photographS2 = True
-            "."
+            "I touch the photographs on the wall."
+            "The person I'm searching for—they aren't in these pictures. {w}Somehow I'm certain of it."
+            "I'm also certain they might have been, once. {w}So now I search the photographs for this lack, like a game of finding the turtle egg amidst the piles of rocks on a beach."
+            "I heard an anecdote from a coworker at a previous job; what's missing is always more obvious than what's there."
+            "It isn't true, of course."
+            "It's a problem with the human vision. {w}You might be half blind, but the eye fills in the gaps. The brain stem tricks you into believing your own holistic view."
+            "In these photographs, the absence—if it is an absence—writes itself away."
+            "I recognise myself in several pictures. {w}In one it's a much younger version of me, teeth bared in a wide grin."
+            "There are gaps, now that I'm looking for them so intently. {w}An empty space embraced by an arm here, a woman smiling to thin air there."
+            "...Like this, I wonder how many people have been erased, people that I used to know."
+            p "..."
+            "Figures that an unspoken rule to {i}being{/i} is recognition. {w}It is not enough to exist alone, to acknowledge yourself and be acknowledged by your own self"
+            "To exist, it is necessary to be recognised by another."
+            "And if this recognition is not given—{w}or, if this recognition is taken away, it follows that non-existence will arrive snapping at its heels."
+            "..."
+            "I won't find anything else here, let's look somewhere else."
             jump mainroom
         else:
-            "."
+            "I glance at the corkboard again."
+            "I don't think there's anything new for me to examine."
             jump mainroom
 
 label remembrance1:
@@ -791,5 +868,5 @@ label remembrance1:
     "I think, though I can't be sure, the answer is...'not long ago'. {w}They were here not long ago."
     "It's not only my head that's aching."
     "I can feel something sharp and heavy at the back of my throat."
-    "And I don't need to look to know the purple ink is already gone."
+    "And I don't need to look to know the purple ink that had been present a moment ago...{w}is already gone."
     jump mainroom

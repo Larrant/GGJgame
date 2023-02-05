@@ -18,7 +18,8 @@ define config.name = _("A Metal Forest Without")
 ## Determines if the title given above is shown on the main menu screen. Set
 ## this to False to hide the title.
 
-define gui.show_name = True
+# EDIT
+define gui.show_name = False
 
 
 ## The version of the game.
@@ -37,7 +38,7 @@ define gui.about = _p("""
 ## distribution. This must be ASCII-only, and must not contain spaces, colons,
 ## or semicolons.
 
-define build.name = "GGJgame"
+define build.name = "AMetalForestWithout"
 
 
 ## Sounds and music ############################################################
@@ -63,7 +64,7 @@ define config.has_voice = True
 ## game, until it is stopped or another file is played.
 
 # define config.main_menu_music = "main-menu-theme.ogg"
-
+define config.main_menu_music = "audio/menu.mp3"
 
 ## Transitions #################################################################
 ##

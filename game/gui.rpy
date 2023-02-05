@@ -26,7 +26,8 @@ init python:
 define gui.accent_color = '#0099cc'
 
 ## The color used for a text button when it is neither selected nor hovered.
-define gui.idle_color = '#888888'
+# EDIT
+define gui.idle_color = '#ffffff'
 
 ## The small color is used for small text, which needs to be brighter/darker to
 ## achieve the same effect.
@@ -70,7 +71,8 @@ define gui.text_size = 33
 define gui.name_text_size = 45
 
 ## The size of text in the game's user interface.
-define gui.interface_text_size = 33
+# EDIT
+define gui.interface_text_size = 44
 
 ## The size of labels in the game's user interface.
 define gui.label_text_size = 36

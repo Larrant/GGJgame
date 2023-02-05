@@ -249,14 +249,15 @@ screen quick_menu():
             xalign 0.5
             yalign 1.0
 
-            textbutton _("Back") action Rollback()
+            # textbutton _("Back") action Rollback()
             textbutton _("History") action ShowMenu('history')
             textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
             textbutton _("Auto") action Preference("auto-forward", "toggle")
-            textbutton _("Save") action ShowMenu('save')
-            textbutton _("Q.Save") action QuickSave()
-            textbutton _("Q.Load") action QuickLoad()
-            textbutton _("Prefs") action ShowMenu('preferences')
+            # EDIT
+            # textbutton _("Save") action ShowMenu('save')
+            # textbutton _("Q.Save") action QuickSave()
+            # textbutton _("Q.Load") action QuickLoad()
+            textbutton _("Settings") action ShowMenu('preferences')
 
 
 ## This code ensures that the quick_menu screen is displayed in-game, whenever
@@ -286,49 +287,96 @@ style quick_button_text:
 ## to other menus, and to start the game.
 
 screen navigation():
+# EDIT
+    if renpy.get_screen("main_menu"):
+        hbox:
+            style_prefix "navigation"
 
-    vbox:
-        style_prefix "navigation"
+            # EDIT
+            # xpos gui.navigation_xpos
+            xalign 0.5
+            yalign 0.9
 
-        xpos gui.navigation_xpos
-        yalign 0.5
+            spacing gui.navigation_spacing
 
-        spacing gui.navigation_spacing
+            if main_menu:
 
-        if main_menu:
+                textbutton _("Start") action Start()
 
-            textbutton _("Start") action Start()
+            else:
 
-        else:
+                textbutton _("History") action ShowMenu("history")
 
-            textbutton _("History") action ShowMenu("history")
+            #     textbutton _("Save") action ShowMenu("save")
 
-            textbutton _("Save") action ShowMenu("save")
+            # textbutton _("Load") action ShowMenu("load")
+            # EDIT
+            textbutton _(" Settings  ") action ShowMenu("preferences")
 
-        textbutton _("Load") action ShowMenu("load")
+            if _in_replay:
 
-        textbutton _("Preferences") action ShowMenu("preferences")
+                textbutton _("End Replay") action EndReplay(confirm=True)
 
-        if _in_replay:
+            elif not main_menu:
 
-            textbutton _("End Replay") action EndReplay(confirm=True)
+                textbutton _("Main Menu") action MainMenu()
 
-        elif not main_menu:
+            textbutton _("About") action ShowMenu("about")
 
-            textbutton _("Main Menu") action MainMenu()
+            if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
 
-        textbutton _("About") action ShowMenu("about")
+                ## Help isn't necessary or relevant to mobile devices.
+                textbutton _("Help") action ShowMenu("help")
 
-        if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
+            if renpy.variant("pc"):
 
-            ## Help isn't necessary or relevant to mobile devices.
-            textbutton _("Help") action ShowMenu("help")
+                ## The quit button is banned on iOS and unnecessary on Android and
+                ## Web.
+                textbutton _("Quit") action Quit(confirm=not main_menu)
+    else:
+        vbox:
+            style_prefix "navigation"
 
-        if renpy.variant("pc"):
+            xpos gui.navigation_xpos
+            yalign 0.5
 
-            ## The quit button is banned on iOS and unnecessary on Android and
-            ## Web.
-            textbutton _("Quit") action Quit(confirm=not main_menu)
+            spacing gui.navigation_spacing
+
+            if main_menu:
+
+                textbutton _("Start") action Start()
+
+            else:
+
+                textbutton _("History") action ShowMenu("history")
+
+                # EDIT textbutton _("Save") action ShowMenu("save")
+
+            # EDIT textbutton _("Load") action ShowMenu("load")
+
+            # EDIT textbutton _("Preferences") action ShowMenu("preferences")
+            textbutton _("Settings") action ShowMenu("preferences")
+
+            if _in_replay:
+
+                textbutton _("End Replay") action EndReplay(confirm=True)
+
+            elif not main_menu:
+
+                textbutton _("Main Menu") action MainMenu()
+
+            textbutton _("About") action ShowMenu("about")
+
+            if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
+
+                ## Help isn't necessary or relevant to mobile devices.
+                textbutton _("Help") action ShowMenu("help")
+
+            if renpy.variant("pc"):
+
+                ## The quit button is banned on iOS and unnecessary on Android and
+                ## Web.
+                textbutton _("Quit") action Quit(confirm=not main_menu)
 
 
 style navigation_button is gui_button
@@ -340,6 +388,10 @@ style navigation_button:
 
 style navigation_button_text:
     properties gui.button_text_properties("navigation_button")
+    # EDIT
+    font "gui/fonts/Sora-Bold.ttf"
+    selected_color "#ff0000"
+    xalign 0.5
 
 
 ## Main Menu screen ############################################################
@@ -385,7 +437,8 @@ style main_menu_frame:
     xsize 420
     yfill True
 
-    background "gui/overlay/main_menu.png"
+    # EDIT
+    # background "gui/overlay/main_menu.png"
 
 style main_menu_vbox:
     xalign 1.0

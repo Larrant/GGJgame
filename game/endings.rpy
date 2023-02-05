@@ -1,5 +1,7 @@
 label end1:
-    scene bg memory
+    "..."
+    "I don't know what I'm doing any more."
+    scene bg memory with Dissolve (0.5)
     "I had just left work when I saw it on the news."
     "It had been afternoon news, but I didn't have news apps on my phone any more so I hadn't found out. {w}Keeping up had gotten tiring, after awhile."
     "I watched, but the news broadcaster on the screen was inaudible. There was too much noise on the train."
@@ -59,10 +61,10 @@ label end1:
     "I rub my brow and look down at my feet. {w}I haven't taken my shoes off yet."
     p "..."
     "Well, my keys are still on the table, and I've only eaten lunch today. {w}I think I'll go downstairs and get something to eat, something cheap."
-    "Maybe curry from the closest noodle place. {w}It's honestly pretty shit curry."
+    "Maybe curry from the closest noodle place."
     "I don't look behind me as I leave."
     "..."
-    play sound click
+    #play sound click
     window hide
     scene bg black with Dissolve (0.5)
     scene ending1 with Dissolve (0.5):
@@ -178,7 +180,7 @@ label end3:
     "..."
     "It's dead, so I might as well replace the battery."
     "I have to reach to grab it. {w}It doesn't come easy either."
-    play sound clatter
+    #play sound clatter
     p "There we go."
     "There's dust on top of the clock, a thick amount. {w}My fingers come away almost black."
     "And when I turn it over..."
@@ -190,23 +192,24 @@ label end3:
     "But I grip the clock tight as I go to pick up my phone. {w}I keep two fingers pressed over the gouged plastic."
     "My phone is still sitting by the keys on the table. I pick it up with one hand, dialling in the numbers on the back of the clock."
     "My fingers are nerveless. The number isn't a local number."
-    play sound phonecall
+    #play sound phonecall
     "..."
     "I'll laugh if this call goes into his voicemail inbox."
     "If this is even him."
-    play sound phoneclick
-    s "Hello?"
+    #play sound phoneclick
+    m "Hello?"
     "There's noise in the background of the call. Static as well, the connection isn't very good."
     "But now that I hear it, I recognise this voice."
     p "Axel?"
     a "Yes—{w}listen, can I call you back in a—"
     p "No!"
-    p "Don't call me back, stay on the line. Just—{w}stay on the fucking line, Axel."
+    "My own voice is loud in my ears."
+    p "Don't call me back, stay on the line. Just—{w}stay on the fucking line."
     a "...Loy?—{w}Wait, is that you? Loy?"
-    p "...Yeah. Yeah. {w}So just don't hang up."
+    p "...Yeah. Yeah. It's me. {w}So just don't hang up."
     p "Please."
-    "For a moment, there's no reply on the other end. And then..."
-    a "Yeah, sure. Of course. Don't worry, I won't hang up—Now you stay on the line too, yeah?"
+    "I wait. {w}For a moment, there's no reply on the other end. And then..."
+    a "Yeah...I...Yes, sure. Of course. Don't worry, I won't hang up—{w}but—{w}I have to do something for a sec. You stay on the line too, yeah?"
     "I can't discern his tone of voice, not with all the static. He sounds different, though I can't tell how. {w}Maybe I just don't remember what he's meant to sound like."
     "There's more noise in the backdrop. Voices. They come and go."
     "I notice I've started leaning against the door. Maybe because I can't feel much of my body, suddenly."
@@ -236,7 +239,7 @@ label end3:
     "I don't understand."
     "Or I think I might understand, I might be starting to. But I'm not really interested in understanding. {w}But for some reason, I still open my mouth."
     l "Did I call you before?"
-    a "Yeah. I think the last time was, uh—{w}don't make me look like I've memorised this—{w}February two years ago?"
+    a "Yeah. I think the last time was, uh—{w}don't make me look like I've memorised this—{w}January two years ago?"
     l "Oh."
     "Somewhat dully, I roll that over my mind."
     l "Two years ago, huh."

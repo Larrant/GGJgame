@@ -3,6 +3,9 @@ define config.rollback_enabled = False
 define p = Character("...")
 define a = Character ("Axel", color="#A020F0")
 define u = Character("That Person", color="#A020F0")
+define l = Character("Loy")
+define m = Character("Man")
+define f = Character("Father")
 
 #VARIABLES#
 
@@ -15,7 +18,9 @@ default havename = False
 default calendarink = False
 default pamphletink = False
 
+default bikeS1 = False
 default bikeS2 = False
+default bikeS3 = False
 default calendarS1 = False
 default calendarS2 = False
 default cameraS1 = False
@@ -48,7 +53,7 @@ init:
 
 image bg white = "#fff"
 image bg black = "#000"
-image bg room = im.FactorScale("mainroom.jpg", 1.2)
+image bg room = im.FactorScale("mainroom.png", 1.75)
 image ending1 = "ending1.png"
 image ending2 = "ending2.png"
 image ending3 = "ending3.png"
@@ -56,6 +61,8 @@ image ending3 = "ending3.png"
 #SFX#
 
 define cityscape = "audio/sfx/name.mp3"
+define clatter = "audio/sfx/name.mp3"
+define click = "audio/sfx/name.mp3"
 define keyjangle = "audio/sfx/name.mp3"
 
 label start:
@@ -126,7 +133,11 @@ label mainroom:
         window hide
     if funky == 3:
         $ renpy.pause(1, hard=False)
-        "It's meant to be painless, {w}but my head hurts anyway."
+        "It's meant to be painless, but it aches in my head and in my lungs anyway."
+        "I don't want this ache to go away."
+        "I can already feel it slipping."
+        p "I need to hurry."
+        "...Before I lose track of this thread, and this ache."
         $ renpy.pause(1, hard=False)
         window hide
     if ticktock == 4:
@@ -143,14 +154,14 @@ label mainroom:
         window hide
     if funky == 5:
         $ renpy.pause(1, hard=False)
-        "funky: 5."
+        "..."
+        "What am I missing."
+        "How do I find you."
         $ renpy.pause(1, hard=False)
         window hide
     if ticktock == 7:
-        $ renpy.pause(1, hard=False)
         "..."
-        $ renpy.pause(1, hard=False)
-        window hide
+        "The sun is setting."
     if ticktock == 8:
         jump end1
     scene bg room
@@ -158,6 +169,8 @@ label mainroom:
     menu():
         "Bike":
             jump bike
+        #"Book":
+        #    jump book
         "Calendar":
             jump calendar
         "Camera":
@@ -170,6 +183,10 @@ label mainroom:
             jump pamphlet
         "Photographs":
             jump photograph
+        #"Receipt":
+        #    jump receipt
+        #"Snacks":
+        #    jump snacks
 return
 
 label bike:
@@ -177,17 +194,86 @@ label bike:
     if ticktock in range(0, 4):
         if funky in range(0, 4):
             $ funky += 1
+            $ bikeS1 = True
         "My bike. Rusted. Spokes fallen off. The paint all peeling. {w}I used to use this to make deliveries."
         "It's not important right now."
         jump mainroom
     #bike stage 2
     if ticktock in range(4, 7):
-        $ funky += 1
-        "."
-        jump mainroom
+        if bikeS2 == False:
+            $ funky += 1
+            $ ticktock += 1
+            $ bikeS2 = True
+            $ bikeS3 = True
+            "I step over piles of clutter on my way to the bike."
+            "When I was working that delivery job, I used to ride this bike every day. {w}Kind of broke it that way, I guess I hung too many takeout boxes on its back."
+            "The pedal's never worked the same since I quit that job."
+            "Maybe there's something here that I overlooked."
+            "I mostly ignore the bike these days, except to think about throwing it out, but...{w}I don't know, maybe the point is to look in places I wouldn't expect."
+            "..."
+            "I examine the bike, getting my hands grey with dirt in the process, but I find nothing."
+            "As I use the seat to lever myself back up, I notice a flake of blue coming off on my palm. {w}Great, the fabric on the saddle is starting to peel."
+            "More than that, the whole saddle is starting to peel off."
+            "For awhile, I've been meaning to buy fabric glue for the saddle. Or maybe some sealant."
+            "With this thing, if it isn't the pedal skedaddling out of control, it's the brake or the cogset."
+            "A long time ago, I even thought about buying a new bike—{w}but that was when I still cycled."
+            "These days, it wouldn't be worth it."
+            "My parents had bought this bike for me, when I still lived with them. {w}A birthday gift, something like that."
+            "It was a bike, so it was supposedly meant to be shared... {w}but I was the only one who ended up using it."
+            "I took it with me when I moved out."
+            "Craning my head, I examine the label on the saddle."
+            "The label looks pretty complete, I guess it's not big enough to really contain anything that bad."
+            p "...Nevermind."
+            "Let's look at something else."
+            jump mainroom
+        if bikeS3 == True:
+            $ funky += 1
+            $ ticktock += 1
+            $ bikeS3 = False
+            "I guess I still have a lot of memories connected to this bike."
+            "Who knows how many more memories I've lost, but..."
+            "That's why I can't get rid of it. {w}Even if some recollections leave a bad taste in my mouth."
+            scene bg memory
+            p "You promised to go with me to the trail this afternoon. Are you still coming?"
+            f "That again? Not today, dad's too tired to do it today. Next week, okay."
+            p "You said 'next week' last week."
+            f "It's busy for me at work right now. I told you I don't have the time, I have to deal with a lot."
+            f "If you want to cycle, do it yourself. Get your sister do it with you."
+            p "Great, you're going back on your word again? {w}Even when you said you'd go with me today?"
+            p "Typical of you."
+            f "Hey. Hey. Didn't you say you would cycle to school every day if we bought you the new bike? How come you're still catching the subway every day, huh?"
+            p "Don't change the subject. You promised me."
+            f "We already bought you the bike! Isn't that enough?"
+            f "You can't have everything."
+            p "..."
+            p "You're busy with work? {w}Even on weekends? {w}Even right now? It's Saturday."
+            p "Every weekend and you just stay home and watch TVB like an idiot. You never go out, you never do anything!"
+            f "You shut your mouth!"
+            f "I work, I put food on this family's table, do I have to work on the weekend too, just because my kid won't stop running his mouth?!"
+            p "So spending time with your kid is work?"
+            p "How can you call yourself a father."
+            scene bg room
+            "..."
+            "It makes me more embarrassed than angry, thinking about that now."
+            "Hah."
+            "That guy probably promised it countless times, but he never did go with me. {w}Not once."
+            "I think I was just obsessed with the idea because I'd grown up looking at our shelf of cycling medals. {w}His medals."
+            "Honestly, if he hadn't meant to keep his promises, he shouldn't have made them at all."
+            "This isn't what I should be thinking about right now."
+            p "..."
+            "It's hard to hold onto the urgency I was feeling, when I don't have the rationale to back it up."
+            "Maybe that's the worst part."
+            "This person I'm trying to find...I've forgotten them."
+            "And because I've forgotten them I can't conjure up the urge to find them again."
+            "Maybe it's still here, but how do I hold on?"
+            jump mainroom
+        else:
+            "..."
+            "I used to love this bike."
+            "These days...I wonder why I don't ride it any more."
+            jump mainroom
 
 label calendar:
-    #missing stage 2 new old, stage 3 new old
     #calendar stage 1
     if ticktock in range(0, 4):
         if funky in range(0, 4):
@@ -236,9 +322,8 @@ label calendar:
             "I'll have to keep an eye out for anything marked with this date."
             jump mainroom
     if ticktock in range(4, 7):
-        if funky in range(4, 7):
-            $ funky += 1
         if calendarS2 == False:
+            $ funky += 1
             $ ticktock += 1
             $ calendarS2 = True
             "I move to the calendar."
@@ -252,16 +337,37 @@ label calendar:
             "I frown."
             p "What was I looking for."
             p "Oh. It's February already."
-            "I take the calendar down to turn the page to February."
-            "As I hang it up again, a slip of paper slides out from between the heavy pages and flutters to the floor."
+            menu():
+                "I should change the page to February":
+                    "I take the calendar down to change the page."
+                    "As I hang it up again, something slides out of the wire spine of the calendar and clatters to the floor."
+                    p "What..."
+                    "I pick up a purple gel pen."
+                    if remembranceS1 == True:
+                        "This is..."
+                        p "It's that guy's pen."
+                        "But what's it doing here?"
+                    "I look down the spine of the calendar, but there's nothing else tucked in there."
+                    "..."
+                    "I uncap the pen, looking at the tip."
+                    "Well, I've never really liked the colour purple."
+                    "I unscrew it on a whim, wondering if there might be some sort of rolled up paper cipher inside. {w}Unfortunately, that's just a product of my imagination; there's nothing."
+                    p "..."
+                    p "Nevermind."
+                "Examine January for more clues":
+                    if calendarS1 == False:
+                        "The 21st is marked in black, the only box with that colour. I frown."
+                        "It wasn't long ago, but I don't remember circling that."
+                        "Another important date that I forgot, then."
+                    "Well, there's just the 21st that looks out of place."
+                    "I work a couple of jobs, so it's better for me to keep track of them somewhere physical. {w}I always forget about updating schedules on my phone."
+                    p "..."
+                    p "What happened on the 21st."
             jump mainroom
         else:
-            "I move to the calendar."
-            "Right, I was just here."
+            "I glance at the calendar."
+            "Nothing new there."
             jump mainroom
-    if ticktock in range(7, 10):
-        "."
-        jump mainroom
 
 label camerascene:
     #camera stage 1
@@ -352,7 +458,7 @@ label camerascene:
             jump mainroom
         else:
             $ renpy.pause(0.5, hard=False)
-            "No, I've just looked at that."
+            "I've just checked the camera, no point doing it again."
             jump mainroom
     #camera stage 2
     if ticktock in range(4, 7):
@@ -415,21 +521,37 @@ label clock:
             "I quite literally don't have time for that right now."
             jump mainroom
         else:
-            "I glance at the clock. {w}It's still broken."
+            "I glance at the clock. {w}It's still dead."
             jump mainroom
     #clock stage 2
     if ticktock in range(4, 7):
         if remembranceS2 == True:
             jump end3
-        if funky in range(4, 7):
-            $ funky += 1
         if clockS2 == False:
+            $ funky += 1
             $ ticktock += 1
             $ clockS2 = True
-            "."
+            "I glance at the dead clock on the wall."
+            "I've had it for a decade or more now."
+            "These days I guess I don't even possess enough effort to take it down and replace the battery."
+            "..."
+            "No, I guess I like it this way."
+            "It stopped one day at eight o'clock in the evening, and the thin minute hand never ticked again."
+            "It would be good if time in this room, like time for the clock, could stop like that—{w}if other objects could preserve themselves at will, and so cleanly, with an accuracy to the very second at which they had frozen."
+            "But this is a city where the present eats the past, and so even in this room—nothing is untouched that can remain untouched."
+            "Yeah. I guess if they start censoring numbers, I'll just have to look at a minute and hour hand in a white circle."
+            "It's only a little funny to think about: numbers seem so integral to be unable to simply up and disappear one day."
+            "But words had seemed integral too, and they had managed to vanish with alacrity."
+            "It didn't seem like there was much of a difference, and all the books still made sense. But then, how would anyone really know?"
+            "Even the blank pages in the middle of textbooks made sense. {w}Because whatever had been there was already gone, and the loss had filled itself up."
+            "And there was no way of comparison, no methodology or theory."
+            "There were no lists of erased words, because if there were lists then they would not be erased."
+            "After everything, I'm glad the clock is still here."
             jump mainroom
         else:
-            "."
+            "The clock doesn't tick any more, not since it ran out of battery and I couldn't be bothered to change it."
+            "But I think, at night, I still subconsciously expect ticking. {w}Falling asleep to silence sometimes feels like I'm falling asleep in a world where time has stopped."
+            "..."
             jump mainroom
 
 label notebook:
@@ -488,11 +610,11 @@ label notebook:
             p "That's not what I need to do right now."
             "The paper trembles."
             p "Fuck. {w}Fuck."
-            "I throw the notebook away. {w}It thumps on the ground, splays itself face down."
+            "I throw the notebook away. {w}It thumps on the table, splays itself face down."
             "I can't waste any more time."
             jump mainroom
         else:
-            "I glance at the notebook, still on the ground. No. I can't be distracted right now."
+            "I glance at the notebook, still splayed on the table. No. I can't be distracted right now."
             jump mainroom
     #notebook stage 2
     if ticktock in range(4, 7):
@@ -501,10 +623,16 @@ label notebook:
         if notebookS2 == False:
             $ ticktock += 1
             $ notebookS2 = True
-            "."
+            "I pick up the notebook."
+            if notebookS1 == True:
+                "I tossed it away earlier, but..."
+                "There's a lot of information here. There's probably something I missed."
+            "..."
+            if havename == True and havepostcard == True:
+                "Axel..."
             jump mainroom
         else:
-            "."
+            "The notebook is still here...but I don't think it's right. {w}I should look at something else."
             jump mainroom
 
 label pamphlet:
@@ -573,17 +701,20 @@ label photograph:
         if photographS1 == False:
             $ ticktock += 1
             $ photographS1 = True
-            "There has to be something on that corkboard that's useful."
-            "On the wall, I've pinned up photographs and a couple of postcards. Some newspaper clippings. {w}Most of the photographs are of other people, but there are a couple with me in it."
+            "Maybe they're on the corkboard. Maybe I'll even...{w}maybe I'll recognise them."
+            "If that's even a good sign."
+            "On the wall, I've pinned up photographs and a couple of postcards. A couple of newspaper clippings. {w}Most of the photographs are of other people, but there are a couple with me in it."
             "Some of the photographs are just paper, images I printed and cut out."
-            "I don't know who I'm looking for—{w}and that had better help me out right now."
-            "Most of the pictures are old, from years ago. {w}I've heard that old stuff lasts longer."
-            "Doesn't erase the same."
-            "Doesn't erase as fast as memory."
+            "I don't know who I'm looking for—{w}I don't know if recognition is trustworthy."
+            "I have a feeling that the point is...I won't recognise them."
+            "Most of the pictures are old, from years ago. {w}Well, I've heard that old things last longer."
+            "They don't erase the same."
+            "They don't erase as fast as memory."
             "I skim haphazardly, going over the photographs one by one. {w}Or two by two. {w}Just quickly. {w}Sure, they say it doesn't erase as fast..."
             "But maybe that's a wrong memory too."
             "Near the top of the board right there's a picture of me and some other guys standing on top of a mountain ridge. {w}I'm making a V sign at the camera."
-            "Another picture of me and a couple of friends surfing. {w}Photographs from that one trip we took to Hokkaido. {w}I recognise all the people in the photographs."
+            "Another picture of me and a couple of friends surfing. {w}Photographs from that one trip we took to Hokkaido."
+            "I recognise all the people in the photographs, and I'm pretty sure I still have all of their contacts."
             "This isn't helping. This isn't what I'm looking for."
             "There's one print I pause at, some wasted guy vomiting down a sewer drain. {w}The camera's shaky, the man's face is blurred."
             "But I remember the context for this picture, and a second later I recognise the drunk guy after all—{w}one of my old coworkers from that shaved ice place, Rocky."
@@ -599,7 +730,7 @@ label photograph:
             if havename == True:
                 "Is that 'Axel'?"
                 "It's the same first letter, but..."
-            "Going off gut feeling actually just feels like being in the dark, groping with both hands for the wall. {w}Any wall. {w}Any marker of time or place."
+            "Honestly? Going off gut feeling actually just feels like being in the dark, groping with both hands for the wall. {w}Any wall. {w}Any marker of time or place."
             "And you're trying to get somewhere, yeah. {w}But how do you get there if you don't know where you are."
             "If this is a direction, at least someone's gotta tell me my place on the map."
             p "..."

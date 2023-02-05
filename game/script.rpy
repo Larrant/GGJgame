@@ -651,6 +651,7 @@ label notebook:
                 "There's a lot of information here. There's probably something I missed."
                 "This time, I should be more careful."
             "I turn the pages, skimming the text and looking for a name or a number, looking for something out of place."
+<<<<<<< HEAD
             "But even though it's all text, all of it written by a past making an attempt to communicate with its future, there's nothing that pricks my awareness."
             "I try to slow down, conscious that all the words will blur together if I'm not careful."
             "The only problem is...even though I'm searching for something, I don't know what exactly I'm searching for."
@@ -673,6 +674,20 @@ label notebook:
             "Eventually, I put the notebook down and rub my forehead."
             "I wonder if there was a better way I could have gone about this. {w}A methodology I could have employed."
             "...Maybe not."
+=======
+            "..."
+            "The only problem is...I don't know what I'm trying to find."
+            if remembranceS1 == True:
+                "I spot something strange, and flip back to look at a certain page. {w}It's completely empty, though it's sandwiched between two filled pages. {w}Just white paper and little inked dots."
+                "...I wonder what I wrote here."
+                if havename == True:
+                    "Come to think of it, I think Axel had talked about that."
+                else:
+                    "Come to think of it, I think...I think the person I'm looking for had talked about that."
+                "They said...it was strange, how easy it was to erase writing, but not other things."
+                "The words in the history books went away by themselves, but they had to get workers to scrub off the gallons of paint graffiti-ing the government adminstrative building."
+                $ remembranceS3 = True
+>>>>>>> 021fa9751c1e76c6b481e1fe1e8328d07bf8b827
             jump mainroom
         else:
             "The notebook is still here...but I don't think it's right. {w}I should look at something else."
@@ -731,7 +746,11 @@ label pamphlet:
             "No, I've just looked at the pamphlet."
             jump mainroom
     #pamphlet stage 2
+<<<<<<< HEAD
     if ticktock in range(4, 9):
+=======
+    if ticktock in range(4, 7):
+>>>>>>> 021fa9751c1e76c6b481e1fe1e8328d07bf8b827
         if pamphletS2 == False:
             $ pamphletS2 = True
             $ ticktock += 1

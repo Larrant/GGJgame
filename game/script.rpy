@@ -1,32 +1,57 @@
 define config.rollback_enabled = False
 
 define p = Character("...")
-define a = Character ("Axel")
+define a = Character ("Axel", color="#A020F0")
+define u = Character("That Person", color="#A020F0")
 
 #VARIABLES#
 
 default ticktock = 0
 default funky = 0
-
 default havepostcard = False
 default havemarker = False
 default havename = False
+
+default calendarink = False
+default pamphletink = False
 
 default bikeS2 = False
 default calendarS1 = False
 default calendarS2 = False
 default cameraS1 = False
 default cameraS2 = False
+default clockS1 = False
+default clockS2 = False
 default notebookS1 = False
 default notebookS2 = False
+default pamphletS1 = False
+default pamphletS2 = False
 default photographS1 = False
 default photographS2 = False
+default remembranceS1 = False
+default remembranceS2 = False
+
+#PERSISTENT VARIABLES#
+
+init -1 python:
+    if not persistent.end1:
+        persistent.end1 = False
+    if not persistent.end2:
+        persistent.end2 = False
+    if not persistent.end3:
+        persistent.end3 = False
+
+init:
+    $ flash = Fade(.25, 0, .75, color="#fff")
 
 #IMAGES#
 
 image bg white = "#fff"
 image bg black = "#000"
 image bg room = im.FactorScale("mainroom.jpg", 1.2)
+image ending1 = "ending1.png"
+image ending2 = "ending2.png"
+image ending3 = "ending3.png"
 
 #SFX#
 
@@ -35,7 +60,7 @@ define keyjangle = "audio/sfx/name.mp3"
 
 label start:
     scene bg black
-    $ renpy.pause(0.3, hard=False)
+    $ renpy.pause(0.8, hard=False)
     show text "I arrive home in a hurry." at truecenter
     with dissolve
     pause
@@ -66,6 +91,17 @@ label start:
     "That's right. {w}I need to find them."
     "I need to hurry and find {glitch=59.94}them{/glitch}."
     $ renpy.pause(0.5, hard=False)
+    if persistent.axelend:
+            scene bg memory
+            with flash
+            p "..."
+            p "What use is remembering. {w}If it's just a memory you can't bring back, maybe it's better to forget."
+            u "{i}Is that really what you think?{/i}"
+            p "..."
+            p "I don't know."
+            $ renpy.pause(0.5, hard=False)
+            window hide
+            with flash
     jump mainroom
 
 label mainroom:
@@ -99,10 +135,10 @@ label mainroom:
         "At one of my old jobs, I used to be able to look out of the service window and skim over the buildings to reach the mountains."
         "The sun would set orange at around seven in summer, and a pinkish glow would gather at my feet. {w}Always felt sort of melancholy, that."
         "Maybe it was how soft everything got, when the sun pastelled the walls of apartment blocks and sidewalks. {w}Felt like you were in a softer world, {w}a world half out of a dream."
-        "A Hong Kong both familiar and not."
+        "A city both familiar and not."
         "I look away from the sliver of twilight through the blinds."
         p "Right. I still have to find them."
-        "Even if I have this feeling...{w}it's getting too late."
+        "Even if I have a feeling...{w}it's getting too late."
         $ renpy.pause(1, hard=False)
         window hide
     if funky == 5:
@@ -115,32 +151,25 @@ label mainroom:
         "..."
         $ renpy.pause(1, hard=False)
         window hide
+    if ticktock == 8:
+        jump end1
     scene bg room
+    $ renpy.pause(0.5, hard=False)
     menu():
         "Bike":
             jump bike
-        #"Book":
-        #    jump book
         "Calendar":
             jump calendar
         "Camera":
             jump camerascene
-        #"Clock":
-        #    jump clock
-        #"Delivery receipt":
-        #    jump receipt
-        #"Fan":
-        #    jump fan
-        #"Pamphlet":
-        #    jump pamphlet
+        "Clock":
+            jump clock
         "Notebook":
             jump notebook
+        "Pamphlet":
+            jump pamphlet
         "Photographs":
             jump photograph
-        #"Snacks":
-        #    jump snack
-        #"Takeout Menu":
-        #    jump takeout
 return
 
 label bike:
@@ -158,7 +187,7 @@ label bike:
         jump mainroom
 
 label calendar:
-#missing stage 2 new old, stage 3 new old
+    #missing stage 2 new old, stage 3 new old
     #calendar stage 1
     if ticktock in range(0, 4):
         if funky in range(0, 4):
@@ -172,12 +201,16 @@ label calendar:
             "Is what I'm looking for here?"
             "There's a square I've marked in black. {w}January 21st."
             "I don't know what that means. But there's a smear of purple ink below it, glittering."
-            "It's not from a marker. No, I'm sure—{w}I'm sure it's theirs."
-            "Right, because they always used glittery gel pens. {w}Carried one everywhere."
-            "That's right, they were here. {w}Not long ago, they were here and they had written something in this calendar."
+            $ calendarink = True
+            "It's not from a marker. No, somehow, somehow I'm sure—{w}I'm sure it's theirs."
+            "That's right, they were here. {w}They must have been here."
+            "Not long ago, they were in this room and they had written something in this calendar."
             "Maybe they weren't careful enough, maybe it's gone already. {w}Just the {glitch=59.94}smear{/glitch} now, just the trail of {glitch=59.94}ink{/glitch}."
             "But as I reach out to touch this proof of life, it {glitch=59.94}goes like—{/glitch}"
-            "And then it's—"
+            "And then—"
+            "{glitch=59.94}And then—{/glitch}"
+            if pamphletink == True:
+                jump remembrance1
             "My thumb is pressed to the calendar. {w}Right below the square that's January 21st."
             "I've marked it in black."
             "I think I knew what it meant, only a few days ago. {w}But I don't know what it means any more."
@@ -238,6 +271,7 @@ label camerascene:
         if cameraS1 == False:
             $ ticktock += 1
             $ cameraS1 = True
+            $ renpy.pause(0.5, hard=False)
             "I pick up my camera."
             "It's pretty old. {w}Uses a CF card, it's that old. {w}I got it from a friend who'd lost interest in photography."
             "He spent a week teaching me the basics. {w}Not even composition, just how to change the settings."
@@ -256,6 +290,7 @@ label camerascene:
             "That can't be right. {w}I don't have another CF card, and I wouldn't have deleted anything."
             menu():
                 "Turn it on again.":
+                    $ renpy.pause(0.5, hard=False)
                     "I'll try again. {w}I take out the card and reinsert it. {w}Then I switch the camera back on."
                     p "..."
                     "Still nothing."
@@ -292,10 +327,32 @@ label camerascene:
                         "{i}'A—'{/i}."
                     "Is that the person I'm trying to find?"
                     "But there's no contact information on the rest of the page."
+                    "Unsettled, I scroll down the rest of the options, hunting for more information. {w}When none is forthcoming, I hesitate before turning the camera off."
+                    "{i}Axel{/i}."
                     $ havename = True
+                "Take out the card.":
+                    $ renpy.pause(0.5, hard=False)
+                    "I take out the CF card, turning it over in my hand."
+                    "Nothing looks wrong with it, but...{w}it's pretty old and if it's an internal problem with the magnet, I would never know."
+                    "I don't remember the last time I took a photograph with this thing."
+                    "A few months ago, probably."
+                    "Is it possible I was the one who deleted the pictures, and then forgot?"
+                    p "..."
+                    "I reinsert the card. After a moment, I try turning the camera on again."
+                    "The screen stays black."
+                    "Don't tell me I just broke it."
+                    "For a moment I just stare at the screen. {w}My fingers are a bit white, I guess I must be gripping it pretty tightly."
+                    "This isn't helping."
+                    p "This always happens, just charge it."
+                    "Right. {w}That's right. {w}Sometimes it gets like this, I knock it the wrong way and it just goes from full battery to nothing."
+                    "I find a cable and plug it in to charge."
+                    "It'll be fine."
+                    "Maybe after the battery's back, the pictures will be too."
+                    "..."
             jump mainroom
         else:
-            "I've just looked at that."
+            $ renpy.pause(0.5, hard=False)
+            "No, I've just looked at that."
             jump mainroom
     #camera stage 2
     if ticktock in range(4, 7):
@@ -304,13 +361,76 @@ label camerascene:
         if cameraS2 == False:
             $ ticktock += 1
             $ cameraS2 = True
+            "I go to check on my camera."
+            if cameraS1 == True and havename == False:
+                "I haven't charged it for very long and when I try to turn it on, it doesn't react."
+                p "..."
+                p "You'd better not be broken."
+            if cameraS1 == False:
+                "It's pretty old, like, a DSLR from two decades ago. {w}I try to turn it on, but for some reason it doesn't react. The screen stays black."
+            if havename == True:
+                "I try to turn the camera on again, but this time I guess it's out of battery: it stays pretty dead in my grasp."
+            p "..."
+            "It always gets like this, this thing loses battery like it's trying to compete with a racehorse for crossing the finishing line. {w}I'd better just let it charge."
+            if remembranceS1 == True:
+                $ remembranceS2 = True
+                "Mouth tight, I run my thumb over the hard shell covering the lens."
+                "Will the pictures I've taken be there the next time I turn this camera on?"
+                p "...Axel."
+                "They used to talk about how to make something permanent."
+                "They used to say physical matter was a kind of proof, and matter which was permanent was a kind of truth. A true truth."
+                "Say, down to the very base level of existence: the configuration of atoms."
+                p "Well...these days, even science would disagree with that."
+                "They were always scientific about this belief in truth. But romantically."
+                "If the erasure of the present reached back to erase the very past which created it, there would still be something left behind. {w}There had to be."
+                "An invisible palimpsest, they said. {w}Time and again written and drawn over, but always there. Always existant."
+                "I thought it didn't matter. {w}If the eye couldn't see it, and if the hand could not return what had been erased...wasn't it just gone for good?"
+                scene bg memory
+                a "But it's not like that with this city, is it?"
+                a "All this uprooting, it doesn't reach far enough into the past. {w}We've still got graffiti carved into the subway walls, we've still got broken pavements that won't go away."
+                a "I think there's a lot that can't go away."
+                a "I think you just have to gouge deep enough for it to stay. {w}You just have to write with a scalpel and not a pen."
+                p "Nobody can read the graffiti any more."
+                a "Eh, maybe somebody will. If there's a past, there's a future."
+                p "...Sure, I guess."
+                scene bg room
+                "Carving memory, huh."
+                "I'm still missing something."
+                "...I have a feeling the answer is in this room."
+            jump mainroom
+        else:
+            "I've just checked on my camera, I don't think it's charged enough yet."
+            jump mainroom
+
+label clock:
+    #clock stage 1
+    if ticktock in range(0, 4):
+        if funky in range(0, 4):
+            $ funky += 1
+        if clockS1 == False:
+            $ clockS1 = True
+            "Reflexively, I look to the clock."
+            "It's out of battery, has been for a few weeks now."
+            "I keep meaning to replace it, but..."
+            "I quite literally don't have time for that right now."
+            jump mainroom
+        else:
+            "I glance at the clock. {w}It's still broken."
+            jump mainroom
+    #clock stage 2
+    if ticktock in range(4, 7):
+        if remembranceS2 == True:
+            jump end3
+        if funky in range(4, 7):
+            $ funky += 1
+        if clockS2 == False:
+            $ ticktock += 1
+            $ clockS2 = True
             "."
             jump mainroom
         else:
             "."
             jump mainroom
-    if ticktock == 8:
-        jump end1
 
 label notebook:
     #notebook stage 1
@@ -386,8 +506,64 @@ label notebook:
         else:
             "."
             jump mainroom
-    if ticktock == 8:
-        jump end1
+
+label pamphlet:
+    if ticktock in range(0, 4):
+        if funky in range(0, 4):
+            $ funky += 1
+        if pamphletS1 == False:
+            $ ticktock += 1
+            $ pamphletS1 = True
+            "I pick up a stray pamphlet."
+            "It's a government pamphlet of some sort, I don't really recognise the people on the front enough to know. {w}Well, I've scribbled a moustache onto the woman."
+            "{i}Together we build a prosperous city of the present!{/i}"
+            p "...Sure."
+            "Flipping it open, it's pretty funny—{w}not humorously funny, not {i}'haha'{/i} funny, just bitter—{w}it's pretty funny seeing how half the text is gone."
+            "Nobody manages to weasel their way out of this communal erasure—{w}not even the guys enacting it."
+            "I'm not sure why I've kept it around, but it's pretty worn and torn."
+            "These days, I'm a hoarder of random junk. {w}I guess it's the unreliability of memory, I don't want to throw anything away when it could have been something important."
+            "Especially something like this, it looks like I've had it around for awhile."
+            "It's not that items fare any better than memory when it comes to it, but...{w}I turn the pages, somehow expectant."
+            "Sometimes I find unexpected traces, messages I churned into code so I'd be able to preserve the message. {w}Code I tried to obsfucate so it wouldn't go away."
+            "But most of the time, these half-messages—{w}these cryptic bits of text—{w}are too out of context to understand, to make coherent."
+            "Even so, I still do it. {w}Maybe I do it because all this detritus around me tells me that's who I am."
+            p "...There's nothing here."
+            "I'm at the back of the pamphlet. {w}No lines, no handwritten letters, nothing."
+            "If there had been in the past, they're already gone."
+            "But as I flip the pamphlet over again, I stop a moment."
+            "I take a closer look at the purple moustache scribbled onto the face of the woman on the front. {w}There's a bonus purple hairdo on her as well."
+            $ pamphletink = True
+            "It's a pretty terribly drawn moustache, curly at the ends and filled in with ink. Same with the hair."
+            "Only—{w}and before I can question how I trust this self-knowledge—{w}I know I don't draw. I didn't even doodle in school."
+            "And now I could swear that—"
+            p "They always do that."
+            "They?"
+            "I frown."
+            "Right, {glitch=59.94}they—{/glitch}"
+            if calendarink == True:
+                jump remembrance1
+            "{glitch=59.94}They—{/glitch}"
+            $ renpy.pause(0.8, hard=False)
+            "For some reason, I'm breathing a little heavily."
+            "I look down at the pamphlet in my hand, and turn it over again."
+            p "..."
+            p "...Just now, I lost something."
+            "But I don't know what that 'something' is."
+            "I go through the pamphlet again, but like on my previous flip-through, there's nothing written in or around the pages."
+            "..."
+            "I look at my hands, but there's nothing on them either."
+            "Whatever I missed, it's already gone."
+            p "..."
+            "I put down the pamphlet before I can crumple it."
+            jump mainroom
+        else:
+            "No, I've just looked at the pamphlet."
+            jump mainroom
+    #pamphlet stage 2
+    if ticktock in range(4, 7):
+        $ funky += 1
+        "."
+        jump mainroom
 
 label photograph:
     #photograph stage 1
@@ -420,6 +596,9 @@ label photograph:
             "I don't remember writing this."
             "'{i}A—{/i}.'"
             "I don't know who that is."
+            if havename == True:
+                "Is that 'Axel'?"
+                "It's the same first letter, but..."
             "Going off gut feeling actually just feels like being in the dark, groping with both hands for the wall. {w}Any wall. {w}Any marker of time or place."
             "And you're trying to get somewhere, yeah. {w}But how do you get there if you don't know where you are."
             "If this is a direction, at least someone's gotta tell me my place on the map."
@@ -431,12 +610,55 @@ label photograph:
             "I glance at the corkboard again."
             "Nothing new there. {w}A sense of urgency drives me away."
             jump mainroom
-    if ticktock == 8:
-        jump end1
+    #photograph stage 2
+    if ticktock in range(4, 7):
+        if funky in range(4, 7):
+            $ funky += 1
+        if photographS2 == False:
+            $ ticktock += 1
+            $ photographS2 = True
+            "."
+            jump mainroom
+        else:
+            "."
+            jump mainroom
 
-label end1:
-
-
-
-###
-### Sound from Zapsplat.com
+label remembrance1:
+    scene bg memory with Dissolve (0.5)
+    $ remembranceS1 = True
+    p "..."
+    "I have to take a step back, clenching my eyes shut."
+    scene bg black with Dissolve (0.1)
+    scene bg room with Dissolve (0.1)
+    scene bg black with Dissolve (0.1)
+    scene bg room with Dissolve (0.1)
+    scene bg black with Dissolve (0.1)
+    scene bg memory with Dissolve (0.5)
+    u "...you feel like you're living in a 'city of the present'?"
+    p "..."
+    p "Huh? {w}What's that you're looking at again."
+    u "Here you go."
+    "Something rustled."
+    p "Thanks for just brandishing it in my general direction."
+    p "..."
+    p "...Huh. {w}Is that the lady running for election this year?"
+    u "Look at the slogan."
+    p "Yeah I'm looking at the slogan. {w}It's pretty short I guess."
+    u "So I was saying, this place? {w}It's more like a city without a past, or maybe a city with the past burned clean out."
+    u "No roots, no nothing. {w}You ever thought what a tree without roots would look like?"
+    p "Hadn't thought about it before."
+    u "In my head? I think it'd look like a skyscraper without any piers. No steel beams, just a mass of brick piled up above ground."
+    p "Might look fine, but then say, a strong wind comes along. {w}And the wind goes whoosh, and after that..."
+    p "Dude, just...{w}I get it, let's talk about something else."
+    u "Sure, sure."
+    scene bg room with Dissolve (0.5)
+    "..."
+    "Yeah, they always used purple gel pens for some reason. {w}Wouldn't say they carried them everywhere, but..."
+    "What was it? Their sister had accidentally bought 400 or so in bulk one time? {w}Either way, enough stock to last a primary school class for a year."
+    p "...When were they here."
+    "..."
+    "I think, though I can't be sure, the answer is...'not long ago'. {w}They were here not long ago."
+    "It's not only my head that's aching."
+    "I can feel something sharp and heavy at the back of my throat."
+    "And I don't need to look to know the purple ink is already gone."
+    jump mainroom

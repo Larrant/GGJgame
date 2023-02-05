@@ -54,7 +54,7 @@ init:
 
 image bg white = "#fff"
 image bg black = "#000"
-image bg room = im.FactorScale("mainroom.png", 1.75)
+image bg room = "gui/images/apartment bg.png"
 image ending1 = "ending1.png"
 image ending2 = "ending2.png"
 image ending3 = "ending3.png"
